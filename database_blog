@@ -1,0 +1,72 @@
+CREATE TABLE "user" (
+  "id" SERIAL PRIMARY KEY,
+  "nombre" varchar,
+  "email" varchar UNIQUE NOT NULL,
+  "age" int
+);
+
+CREATE TABLE "entradas" (
+  "id_entrada" SERIAL PRIMARY KEY,
+  "description" varchar,
+  "password" varchar NOT NULL,
+  "content" varchar,
+  "id_categoria" int
+);
+
+CREATE TABLE "categorias" (
+  "id_categoria" SERIAL PRIMARY KEY,
+  "name" varchar
+);
+
+CREATE TABLE "comentario" (
+  "id_comentario" SERIAL PRIMARY KEY,
+  "comentario" varchar,
+  "id_user" int,
+  "id_entrada" int,
+  "id_categoria" int
+);
+
+CREATE TABLE "autor" (
+  "id_autor" SERIAL PRIMARY KEY,
+  "name" varchar NOT NULL
+);
+
+CREATE TABLE "rel_autor_entrada" (
+  "id_autor_entrada" SERIAL PRIMARY KEY,
+  "id_autor" int,
+  "id_entrada" int
+);
+
+ALTER TABLE "rel_autor_entrada" ADD FOREIGN KEY ("id_autor") REFERENCES "autor" ("id_autor");
+
+ALTER TABLE "rel_autor_entrada" ADD FOREIGN KEY ("id_entrada") REFERENCES "entradas" ("id_entrada");
+
+ALTER TABLE "entradas" ADD FOREIGN KEY ("id_categoria") REFERENCES "categorias" ("id_categoria");
+
+ALTER TABLE "comentario" ADD FOREIGN KEY ("id_user") REFERENCES "user" ("id");
+
+ALTER TABLE "comentario" ADD FOREIGN KEY ("id_categoria") REFERENCES "categorias" ("id_categoria");
+
+ALTER TABLE "comentario" ADD FOREIGN KEY ("id_entrada") REFERENCES "entradas" ("id_entrada");
+
+select * from comentario c    ;
+
+insert into "user" (nombre, email, age) values ('Jorge Perez', 'jperez@gmail.com', 35);
+
+insert into categorias (name) values ('Recetas fitness');
+
+insert into entradas (description, "password", "content", id_categoria) values ('Cuidado de la piel frente al sol', '9nfiefi2r', 'El sol del caribe afecta de manera determinante la piel de sus habitantes',1);
+
+insert into entradas (description, "password", "content", id_categoria) values ('El entrenamiento matutino', '914575i2r', 'El entrenamiento diurno mejora el proceso de sintesis de proteina de las personas',4);
+
+insert into comentario (comentario, id_user, id_entrada, id_categoria) values ('Mi rutina es 3 veces al dia bloqueador solar', 1, 1, 1);
+
+insert into comentario (comentario, id_user, id_entrada, id_categoria) values ('Entrenar en las 7:AM da mejor resultado, tu cuerpo se encuentra menos cansado', 2, 2, 4);
+
+select * from rel_autor_entrada ;
+
+insert into autor (name) values ('Andres Garcia');
+insert into autor (name) values ('Paula Rojas');
+
+insert into rel_autor_entrada (id_autor, id_entrada) values (1,2);
+insert into rel_autor_entrada (id_autor, id_entrada) values (2,1);
